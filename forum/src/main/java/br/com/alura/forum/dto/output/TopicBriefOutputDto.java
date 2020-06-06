@@ -20,6 +20,7 @@ public class TopicBriefOutputDto {
     private String categoryName;
     private int numberOfResponses;
     private boolean solved;
+    private TopicStatus topicStatus;
 
     public TopicBriefOutputDto(Topic topic) {
         this.id = topic.getId() == null ? 1 : topic.getId().intValue();
@@ -31,6 +32,7 @@ public class TopicBriefOutputDto {
         this.categoryName = topic.getCourse().getCategoryName();
         this.numberOfResponses = topic.getNumberOfAnswers();
         this.solved = TopicStatus.SOLVED.equals(topic.getStatus());
+        this.topicStatus = topic.getStatus();
     }
 
     private long getSecondsSince(Instant lastUpdate) {
@@ -70,6 +72,14 @@ public class TopicBriefOutputDto {
     }
 
     public boolean isSolved() { return solved; }
+
+    public TopicStatus getTopicStatus() {
+        return topicStatus;
+    }
+
+    public void setTopicStatus(TopicStatus topicStatus) {
+        this.topicStatus = topicStatus;
+    }
 
     public static List<TopicBriefOutputDto> listFromTopics(List<Topic> topics) {
         return topics.stream()
