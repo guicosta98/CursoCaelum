@@ -2,10 +2,14 @@ package br.com.alura.forum.controller;
 
 import br.com.alura.forum.dto.input.TopicSearchDto;
 import br.com.alura.forum.dto.output.TopicBriefOutputDto;
+import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.repository.TopicRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +26,10 @@ public class TopicController {
     }
 
     @GetMapping(value = "/api/search")
-    public List<TopicBriefOutputDto> listarPorStatusCategoria(TopicSearchDto topicSearchDto){
-        return listFromTopics(topicRepository.findAll(topicSearchDto.toSpecification()));
+    public Page<TopicBriefOutputDto> listarPorStatusCategoria(TopicSearchDto topicSearchDto, Pageable pageable){
+        Page<Topic> topicos = topicRepository.findAll(topicSearchDto.toSpecification(), pageable);
+
+        return listFromTopics(topicos);
     }
 
     @GetMapping(value="/api/topics", produces=MediaType.APPLICATION_JSON_VALUE)

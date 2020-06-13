@@ -2,6 +2,7 @@ package br.com.alura.forum.dto.output;
 
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.model.topic.domain.TopicStatus;
+import org.springframework.data.domain.Page;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -87,4 +88,8 @@ public class TopicBriefOutputDto {
                 .collect(Collectors.toList());
     }
 
+
+    public static Page<TopicBriefOutputDto> listFromTopics(Page<Topic> topics) {
+        return topics.map(TopicBriefOutputDto::new);
+    }
 }
