@@ -1,14 +1,19 @@
 package br.com.alura.forum.config;
 
-
+import br.com.alura.forum.model.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.ant;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
@@ -18,15 +23,15 @@ import static springfox.documentation.builders.RequestHandlerSelectors.basePacka
 public class SwaggerConfig {
 
     @Bean
-    public Docket api(){
+    public Docket api() {
         Contact contato = new Contact(
-                "Guilherme Costa",
-                "https://github.com/guicosta98/",
-                "guim1998@gmail.com");
+                "Rafael Tavares",
+                "https://github.com/rafaeltavares91",
+                "rafaeltavares91@gmail.com");
 
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("Alura Forum API Documentation")
-                .description("Dcoumentação interativa da REST API do Fórum Alura")
+                .description("Está é a documentação iterativa da Rest API do Fórum da Alura")
                 .version("1.0")
                 .contact(contato)
                 .build();
@@ -36,7 +41,16 @@ public class SwaggerConfig {
                 .apis(basePackage("br.com.alura.forum.controller"))
                 .paths(ant("/api/**"))
                 .build()
-                .apiInfo(apiInfo);
+                .apiInfo(apiInfo)
+                .ignoredParameterTypes(User.class)
+                .globalOperationParameters(
+                        Arrays.asList(new ParameterBuilder()
+                                .name("Authorization")
+                                .description("Header para facilitar o envio do Authorization Bearer Token")
+                                .modelRef(new ModelRef("string"))
+                                .parameterType("header")
+                                .required(false)
+                                .build()));
     }
 
 }
